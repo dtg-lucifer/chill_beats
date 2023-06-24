@@ -4,6 +4,7 @@ import 'package:music_playaer/constants/colors.dart';
 import 'package:music_playaer/constants/text_styles.dart';
 import 'package:music_playaer/controllers/player_controller.dart';
 import 'package:music_playaer/screens/player.dart';
+import 'package:music_playaer/widgets/sidebar.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class Home extends StatelessWidget {
@@ -15,12 +16,10 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: bgDarkClr,
+      drawerScrimColor: bgDarkClr,
+      drawer: const SideBar(),
       appBar: AppBar(
-          leading: const Icon(
-            Icons.sort_rounded,
-            color: white,
-            size: 30.0,
-          ),
+          iconTheme: const IconThemeData(color: white),
           actions: [
             IconButton(
               onPressed: () {},
@@ -39,7 +38,7 @@ class Home extends StatelessWidget {
             orderType: OrderType.ASC_OR_SMALLER,
             sortType: null,
             uriType: UriType.EXTERNAL),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(
               child: CircularProgressIndicator(),

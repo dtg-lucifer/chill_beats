@@ -92,7 +92,7 @@ class PlayerScreen extends StatelessWidget {
                         () => Row(
                           children: [
                             Text(
-                              controller.position.value,
+                              controller.position.value.substring(2),
                               style: const TextStyle(color: bgDarkClr),
                             ),
                             const SizedBox(
@@ -119,7 +119,7 @@ class PlayerScreen extends StatelessWidget {
                               width: 5.0,
                             ),
                             Text(
-                              controller.duration.value,
+                              controller.duration.value.substring(2),
                               style: const TextStyle(color: bgDarkClr),
                             )
                           ],

@@ -10,6 +10,8 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  final bool isOpen = false;
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
