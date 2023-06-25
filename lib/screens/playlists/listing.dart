@@ -33,6 +33,19 @@ class _PlaylistListingScreenState extends State<PlaylistListingScreen> {
           style: textStyle(size: 28.0, weight: FontWeight.w800),
         ),
       ),
+      floatingActionButton: ElevatedButton(
+        onPressed: () {},
+        style: const ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(bgColor),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+          child: Icon(
+            Icons.my_library_add_outlined,
+            color: white,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         child: ListView(

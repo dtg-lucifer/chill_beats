@@ -38,16 +38,20 @@ class Home extends StatelessWidget {
             orderType: OrderType.ASC_OR_SMALLER,
             sortType: null,
             uriType: UriType.EXTERNAL),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                 "No songs found on this device !!",
-                style: textStyle(weight: FontWeight.w600, size: 18.0),
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.0,
+                  color: Colors.red,
+                ),
               ),
             );
           } else {
@@ -82,22 +86,78 @@ class Home extends StatelessWidget {
                             size: 48,
                           ),
                         ),
-                        trailing: controller.playIndex.value == index &&
-                                controller.isPLaying.value
-                            ? const Icon(
-                                Icons.play_arrow_rounded,
-                                color: white,
-                                size: 26.0,
-                              )
-                            : const Icon(
-                                Icons.playlist_play_rounded,
-                                color: white,
-                                size: 26.0,
-                              ),
+                        trailing:
+                            !controller.favSongs.contains(snapshot.data![index])
+                                ? const Icon(
+                                    Icons.favorite_outline,
+                                    color: white,
+                                    size: 26.0,
+                                  )
+                                : const Icon(
+                                    Icons.favorite_rounded,
+                                    color: Colors.red,
+                                    size: 26.0,
+                                  ),
                         onTap: () {
                           controller.playIndex.value == index
                               ? controller.pausePlayer()
                               : playAndPauseScreen(snapshot, controller, index);
+                        },
+                        onLongPress: () {
+                          showBottomSheet(
+                            context: context,
+                            builder: (BuildContext ctx) {
+                              return Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Container(
+                                  height: 120,
+                                  color: bgDarkClr,
+                                  child: Column(
+                                    children: [
+                                      ListTile(
+                                        leading: const Icon(
+                                          Icons.add_to_photos_outlined,
+                                          color: white,
+                                        ),
+                                        title: const Text(
+                                          'Add to playlist',
+                                          style: TextStyle(color: white),
+                                        ),
+                                        onTap: () {
+                                          Get.back();
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: controller.favSongs
+                                                .contains(snapshot.data![index])
+                                            ? const Icon(
+                                                Icons.favorite_rounded,
+                                                color: Colors.red,
+                                              )
+                                            : const Icon(
+                                                Icons.favorite_outline,
+                                                color: white,
+                                              ),
+                                        title: controller.favSongs
+                                                .contains(snapshot.data![index])
+                                            ? const Text(
+                                                'Remove from favourites',
+                                                style: TextStyle(color: white),
+                                              )
+                                            : const Text(
+                                                'Add to favourites',
+                                                style: TextStyle(color: white),
+                                              ),
+                                        onTap: () {
+                                          Get.back();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
                         },
                       ),
                     ),
