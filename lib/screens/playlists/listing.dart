@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:music_playaer/constants/colors.dart';
 import 'package:music_playaer/constants/text_styles.dart';
+import 'package:music_playaer/controllers/player_controller.dart';
 import 'package:music_playaer/screens/playlists/playlist.dart';
 
 class PlaylistListingScreen extends StatefulWidget {
@@ -12,6 +14,13 @@ class PlaylistListingScreen extends StatefulWidget {
 }
 
 class _PlaylistListingScreenState extends State<PlaylistListingScreen> {
+  final controller = PlayerController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +43,82 @@ class _PlaylistListingScreenState extends State<PlaylistListingScreen> {
         ),
       ),
       floatingActionButton: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            useSafeArea: true,
+            builder: (BuildContext ctx) {
+              return Material(
+                type: MaterialType.transparency,
+                child: Center(
+                  child: SizedBox(
+                    height: 170,
+                    width: 380,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: bgColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextField(
+                              decoration: InputDecoration(
+                                hintText: "Enter playlist name",
+                                hintStyle: GoogleFonts.poppins(
+                                  color: white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              style: GoogleFonts.poppins(
+                                color: white,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: const Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                      color: white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: const Text(
+                                    "Create",
+                                    style: TextStyle(
+                                      color: white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
         style: const ButtonStyle(
           backgroundColor: MaterialStatePropertyAll<Color>(bgColor),
         ),

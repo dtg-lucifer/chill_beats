@@ -4,16 +4,9 @@ import 'package:localstorage/localstorage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class PlayList {
-  final String name;
-  final List<SongModel>? songs;
-
-  PlayList({required this.name, this.songs});
-}
-
 class PlayerController extends GetxController {
   final LocalStorage storage = LocalStorage('playlists.json');
-  bool? _storageState;
+  late bool? _storageState;
   final audioQuery = OnAudioQuery();
   final audioPlayer = AudioPlayer();
   final List<SongModel> favSongs = [];
@@ -27,13 +20,20 @@ class PlayerController extends GetxController {
   var max = 0.0.obs;
   var value = 0.0.obs;
 
-  late ConcatenatingAudioSource currentPlayList;
+  late ConcatenatingAudioSource currentPlaylist;
 
   @override
   void onInit() async {
     super.onInit();
     checkPermissions();
     _storageState = await storage.ready;
+    getPlaylist();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    audioPlayer.dispose();
   }
 
   updatePosition() {
@@ -75,8 +75,15 @@ class PlayerController extends GetxController {
     if (perm.isDenied) checkPermissions();
   }
 
+  getPlaylist() async {
+    if (_storageState!) {
+      var playLists = storage.getItem('playlists');
+      return playLists;
+    }
+  }
+
   createPlayList(String name) async {
-    var playList = PlayList(name: name);
+    var playList = {"name": name, "songs": []};
     if (_storageState!) {
       await storage.setItem(name, playList);
       return playList;
@@ -103,12 +110,12 @@ class PlayerController extends GetxController {
     if (_storageState!) {
       var playList = storage.getItem(plName);
       var songs = playList.songs;
-      currentPlayList = ConcatenatingAudioSource(children: []);
+      currentPlaylist = ConcatenatingAudioSource(children: []);
       songs!.forEach((song) {
-        currentPlayList.add(AudioSource.uri(Uri.parse(song.data)));
+        currentPlaylist.add(AudioSource.uri(Uri.parse(song.data)));
       });
       try {
-        audioPlayer.setAudioSource(currentPlayList);
+        audioPlayer.setAudioSource(currentPlaylist);
         audioPlayer.play();
         isPLaying(true);
         updatePosition();
@@ -120,24 +127,4 @@ class PlayerController extends GetxController {
       });
     }
   }
-
-  // playPlayList() {
-  //   try {
-  //     audioPlayer.setAudioSource(defaultPlayList);
-  //     audioPlayer.play();
-  //     isPLaying(true);
-  //     updatePosition();
-  //   } on Exception catch (e) {
-  //     printError(info: e.toString());
-  //   }
-  // }
-
-  // addSongToPlayList(String playListName, SongModel song) {
-  //   defaultPlayList.add(AudioSource.uri(Uri.parse(song.data)));
-  // }
-
-  // removeSongFromPlayList(String playListName, SongModel song) {
-  //   defaultPlayList.removeAt(defaultPlayList.children
-  //       .indexOf(AudioSource.uri(Uri.parse(song.data))));
-  // }
 }
