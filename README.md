@@ -1,16 +1,19 @@
-# music_playaer
+# Chill Beats
+
+The all mighty music player you will need in your android device for playing offline musics from your mobile. You can create your custom playlists and mark songs as favourite. Wtih the lightness of flutter app.
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+For Development:
 
-A few resources to get you started if this is your first Flutter project:
+-   Clone the repo
+-   Run `flutter pub get`
+-   Run `flutter run`
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+For Production:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-   Clone the repo
+-   Run `flutter pub get`
+-   Run `flutter build apk --split-per-abi`
